@@ -1,0 +1,37 @@
+.form {
+ font-size: 50px;
+ margin: 0 auto;
+}
+
+.formLabel {
+    margin-left: 20px;
+}
+
+.formInput {
+    font-size: 20px;
+    margin: 10px;
+    border-radius: 5px;
+    height: 30px;
+    border: solid black;
+    border-width: 3px 3px;
+    transition: 0.5s;
+}
+
+.formInput:hover {
+    border-color: blue;
+}
+
+.formButton {
+    font-size: 17px;
+    padding: 8px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: 0.5s;
+}
+
+.formButton:hover {
+    color: white;
+    background-color: black;
+    border: solid 2px blue;
+}
+

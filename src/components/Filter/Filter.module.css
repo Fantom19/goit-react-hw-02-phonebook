@@ -1,0 +1,18 @@
+.filterLabel {
+    margin: 0 auto;
+    font-size: 25px;
+}
+
+.filterInput {
+    font-size: 20px;
+    margin: 10px;
+    border-radius: 5px;
+    height: 30px;
+    border: solid black;
+    border-width: 3px 3px;
+    transition: 0.5s;
+}
+
+.filterInput:hover {
+    border-color: blue;
+}
