@@ -15,6 +15,21 @@ class App extends Component {
     ],
   };
 
+  formSubmitHandler = ({ name, number }) => {
+    const verifyContact = this.state.contacts.find(
+      contact => contact.name.toLowerCase() === name.toLowerCase()
+    );
+
+    const newContact = { ...{ name, number }, id: nanoid() };
+    if (!verifyContact) {
+      this.setState(prevState => ({
+        contacts: [...prevState.contacts, newContact],
+      }));
+    } else {
+      return alert(` Kонтакт ${name} вже існує!`);
+    }
+  };
+
   contactsFilter = [];
 
   handleDeleteContact = el => {
@@ -47,23 +62,6 @@ class App extends Component {
         this.contactsFilter.push(i);
       }
     }
-  };
-
-  formSubmitHandler = data => {
-    this.contactsFilter.splice(0, this.contactsFilter.length);
-    const findElem = this.state.contacts.filter(
-      contact => contact.name.toUpperCase() === data.name.toUpperCase()
-    );
-    if (findElem.length > '') {
-      alert(data.name + ' is already in contacts.');
-      return;
-    }
-    this.state.contacts.push({
-      id: nanoid(),
-      name: data.name,
-      number: data.number,
-    });
-    this.setState(prevState => ({ contacts: prevState.contacts }));
   };
 
   render() {
