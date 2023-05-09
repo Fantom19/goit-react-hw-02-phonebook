@@ -16,4 +16,5 @@
     color: white;
     background-color: black;
     border: solid 2px blue;
+    transform: skew(-15deg);
 }

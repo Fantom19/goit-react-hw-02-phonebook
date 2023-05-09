@@ -7,7 +7,7 @@ import css from "./App.module.css"
 
 class App extends Component {
   state = {
-    contacts: [],
+    contacts: [ {id: 'id-1', name: 'Go IT', number: '050 366 17 77'},],
     filter: '',
   };
 
