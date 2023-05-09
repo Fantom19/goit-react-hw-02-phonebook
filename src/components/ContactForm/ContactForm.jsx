@@ -5,14 +5,17 @@ import React, { Component } from 'react';
 class ContactForm extends Component {
   state = { name: '', number: '' };
 
+  
   handleChange = e => {
-    const { name, value } = e.target;
-    this.setState({ [name]: value });
+    this.setState({ [e.target.name]: e.target.value });
   };
 
   handleSubmit = e => {
     e.preventDefault();
-    this.props.onSubmit(this.state);
+    const { name, number } = this.state;
+    const { addNewContact } = this.props;
+
+    addNewContact(name, number);
     this.reset();
   };
 
@@ -21,6 +24,7 @@ class ContactForm extends Component {
   };
 
   render() {
+    const { name, number } = this.state;
     return (
       <form className={css.form} onSubmit={this.handleSubmit}>
         <label className={css.formLabel}>
@@ -28,7 +32,7 @@ class ContactForm extends Component {
           <input
             placeholder='Enter a name'
             className={css.formInput}
-            value={this.state.name}
+            value={name}
             type="text"
             name="name"
             pattern="^[a-zA-Zа-яА-Я]+(([' -][a-zA-Zа-яА-Я ])?[a-zA-Zа-яА-Я]*)*$"
@@ -42,7 +46,7 @@ class ContactForm extends Component {
           <input 
             placeholder='Enter a number'
             className={css.formInput}
-            value={this.state.number}
+            value={number}
             type="tel"
             name="number"
             pattern="\+?\d{1,4}?[-.\s]?\(?\d{1,3}?\)?[-.\s]?\d{1,4}[-.\s]?\d{1,4}[-.\s]?\d{1,9}"

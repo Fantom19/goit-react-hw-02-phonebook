@@ -7,64 +7,46 @@ import css from "./App.module.css"
 
 class App extends Component {
   state = {
-    contacts: [
-      { id: 'id-1', name: 'Rosie Simpson', number: '459-12-56' },
-      { id: 'id-2', name: 'Hermione Kline', number: '443-89-12' },
-      { id: 'id-3', name: 'Eden Clements', number: '645-17-79' },
-      { id: 'id-4', name: 'Annie Copeland', number: '227-91-26' },
-    ],
+    contacts: [],
+    filter: '',
   };
 
-  formSubmitHandler = ({ name, number }) => {
-    const verifyContact = this.state.contacts.find(
-      contact => contact.name.toLowerCase() === name.toLowerCase()
+  addNewContact = (name, number) => {
+    const newContact = {name, number, id: nanoid()};
+    const CheckingContactForSimilarity = this.state.contacts.some(
+      contact =>
+      contact.name.toLowerCase() === name.toLowerCase() || contact.number === number
     );
 
-    const newContact = { ...{ name, number }, id: nanoid() };
-    if (!verifyContact) {
-      this.setState(prevState => ({
-        contacts: [...prevState.contacts, newContact],
-      }));
-    } else {
-      return alert(` Kонтакт ${name} вже існує!`);
+    if (CheckingContactForSimilarity) {
+      alert(`${name} is already in contacts  
+       => ${name} уже есть в контактах <=`);
+      return;
     }
+
+    this.setState(({ contacts }) => 
+    ({ contacts: [...contacts, newContact] }));
   };
 
-  contactsFilter = [];
-
-  handleDeleteContact = el => {
-    this.contactsFilter.splice(0, this.contactsFilter.length);
-
-    const findElement = this.state.contacts.find(
-      findEl => findEl.id === el.target.dataset.id
-    );
-    if (findElement !== undefined) {
-      const indexElement = this.state.contacts.indexOf(findElement);
-      if (indexElement !== -1) {
-        this.state.contacts.splice(indexElement, 1);
-        this.setState(prevState => ({ contacts: prevState.contacts }));
-      }
-    }
+  searchFilter = filter => {
+    this.setState({ filter });
   };
 
-  handleFilterChange = el => {
-    this.contactsFilter.splice(0, this.contactsFilter.length);
-
-    const { name, value } = el.target;
-    this.setState({ [name]: value });
-
-    const filterArray = this.state.contacts.filter(contact =>
-      contact.name.toUpperCase().includes(value.toUpperCase())
+  UpdateList = contacts => {
+    return contacts.filter(contact =>
+      contact.name.toLowerCase().match(this.state.filter.toLowerCase())
     );
+  };
 
-    if (filterArray.length > '') {
-      for (const i of filterArray) {
-        this.contactsFilter.push(i);
-      }
-    }
+  removeContact = id => {
+    this.setState(({ contacts }) => {
+      return { contacts: contacts.filter(contact => contact.id !== id) };
+    });
   };
 
   render() {
+    const { contacts } = this.state;
+    const filterContacts = this.UpdateList(contacts);
     return (
       <div
         style={{
@@ -77,14 +59,12 @@ class App extends Component {
         }}
       >
         <h1 className={css.titel}>Phonebook</h1>
-        <ContactForm onSubmit={this.formSubmitHandler} />
+        <ContactForm  addNewContact={this.addNewContact} />
         <h2 className={css.titel}>Contacts</h2>
-        <Filter handleFilterChange={this.handleFilterChange} />
-        <ContactList
-          handleDeleteContact={this.handleDeleteContact}
-          contacts={
-            this.contactsFilter.length > '' ? this.contactsFilter : this.state.contacts
-          }
+        <Filter searchFilter={this.searchFilter} />
+        <ContactList 
+           contacts={filterContacts}
+           removeContact={this.removeContact}
         />
       </div>
     );
